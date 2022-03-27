@@ -1,3 +1,5 @@
+import 'package:jaso/src/cp949_converter.dart';
+
 class Combinator {
   final List<String> _choArr = [
     'ㄱ',
@@ -74,22 +76,35 @@ class Combinator {
     'ㅎ'
   ];
 
-  List<String> combinateResult(
-      List<String>? cho, List<String>? joong, List<String>? jong) {
+  List<String> combinateJaso(List<String>? cho, List<String>? joong,
+      List<String>? jong, bool useCP949) {
     List<int> choList = _getChoCodeList(cho);
     List<int> joongList = _getJoongCodeList(joong);
     List<int> jongList = _getJongCodeList(jong);
 
     List<String> resultList = [];
-    choList.forEach((choCode) {
-      joongList.forEach((joongCode) {
-        jongList.forEach((jongCode) {
+    for (var choCode in choList) {
+      for (var joongCode in joongList) {
+        for (var jongCode in jongList) {
           resultList.add(String.fromCharCode(
               (choCode * 21 + joongCode) * 28 + jongCode + 0xAC00));
-        });
-      });
-    });
-    return resultList;
+        }
+      }
+    }
+    if (useCP949) {
+      return _extract2350(resultList);
+    } else {
+      return resultList;
+    }
+  }
+
+  CP949 cp = CP949();
+
+  List<String> _extract2350(List<String> fullList) {
+    return fullList
+        .map((e) => cp.decode(cp.encode(e)))
+        .where((element) => element.isNotEmpty)
+        .toList();
   }
 
   List<int> _getChoCodeList(List<String>? cho) {
