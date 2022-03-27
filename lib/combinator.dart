@@ -74,7 +74,8 @@ class Combinator {
     'ㅎ'
   ];
 
-  List<String> combinateResult(String? cho, String? joong, String? jong) {
+  List<String> combinateResult(
+      List<String>? cho, List<String>? joong, List<String>? jong) {
     List<int> choList = _getChoCodeList(cho);
     List<int> joongList = _getJoongCodeList(joong);
     List<int> jongList = _getJongCodeList(jong);
@@ -91,28 +92,30 @@ class Combinator {
     return resultList;
   }
 
-  List<int> _getChoCodeList(String? cho) {
-    //input cho가 진짜로 cho라는 전제 (입력 단계에서 초성 검증 필요
+  List<int> _getChoCodeList(List<String>? cho) {
+    //TODO INPUT VALID CHECK
     if (cho == null) {
       return _choArr.asMap().keys.toList();
     } else {
-      return [_choArr.indexOf(cho)];
+      return cho.asMap().values.map((e) => _choArr.indexOf(e)).toList();
     }
   }
 
-  List<int> _getJoongCodeList(String? joong) {
+  List<int> _getJoongCodeList(List<String>? joong) {
+    //TODO INPUT VALID CHECK
     if (joong == null) {
       return _joongArr.asMap().keys.toList();
     } else {
-      return [_joongArr.indexOf(joong)];
+      return joong.asMap().values.map((e) => _joongArr.indexOf(e)).toList();
     }
   }
 
-  List<int> _getJongCodeList(String? jong) {
+  List<int> _getJongCodeList(List<String>? jong) {
+    //TODO INPUT VALID CHECK
     if (jong == null) {
       return _jongArr.asMap().keys.toList();
     } else {
-      return [_jongArr.indexOf(jong)];
+      return jong.asMap().values.map((e) => _jongArr.indexOf(e)).toList();
     }
   }
 }
