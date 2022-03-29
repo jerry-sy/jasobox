@@ -98,18 +98,18 @@ class Combinator {
     }
   }
 
-  CP949 cp = CP949();
+  final CP949 _cp = CP949();
 
   List<String> _extract2350(List<String> fullList) {
     return fullList
-        .map((e) => cp.decode(cp.encode(e)))
+        .map((e) => _cp.decode(_cp.encode(e)))
         .where((element) => element.isNotEmpty)
         .toList();
   }
 
   List<int> _getChoCodeList(List<String>? cho) {
     //TODO INPUT VALID CHECK
-    if (cho == null) {
+    if (cho == null || cho.isEmpty) {
       return _choArr.asMap().keys.toList();
     } else {
       return cho.asMap().values.map((e) => _choArr.indexOf(e)).toList();
@@ -118,7 +118,7 @@ class Combinator {
 
   List<int> _getJoongCodeList(List<String>? joong) {
     //TODO INPUT VALID CHECK
-    if (joong == null) {
+    if (joong == null || joong.isEmpty) {
       return _joongArr.asMap().keys.toList();
     } else {
       return joong.asMap().values.map((e) => _joongArr.indexOf(e)).toList();
@@ -127,7 +127,7 @@ class Combinator {
 
   List<int> _getJongCodeList(List<String>? jong) {
     //TODO INPUT VALID CHECK
-    if (jong == null) {
+    if (jong == null || jong.isEmpty) {
       return _jongArr.asMap().keys.toList();
     } else {
       return jong.asMap().values.map((e) => _jongArr.indexOf(e)).toList();

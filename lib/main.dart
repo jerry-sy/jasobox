@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jaso/src/use_case.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,18 +26,19 @@ class JasoHome extends StatefulWidget {
 }
 
 class _JasoHomeState extends State<JasoHome> {
-  String _result = '결과리스트';
+  int _resultCount = 0;
   bool _is2350 = false;
-
-  void _getJasoResult() {
-    setState(() {});
-  }
+  final _choController = TextEditingController();
+  final _joongController = TextEditingController();
+  final _jongController = TextEditingController();
+  final _resultTextController = TextEditingController();
+  final _useCase = UseCase();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('자소조합기'),
+          title: const Text('자소조합기'),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -47,15 +49,34 @@ class _JasoHomeState extends State<JasoHome> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Checkbox(value: _is2350, onChanged: (bool? value) {}),
-                    Text('2350 어쩌고')
+                    Checkbox(
+                        value: _is2350,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            if (value == null) _is2350 = false;
+                            _is2350 = value!;
+                          });
+                        }),
+                    const Text('2350자만 추출 (CP949 encoding)')
                   ],
                 ),
               ),
               SizedBox(
                   width: 150,
                   height: 50,
-                  child: ElevatedButton(onPressed: () {}, child: Text('추출하기'))),
+                  child: ElevatedButton(
+                      onPressed: () async {
+                        String result = await _useCase.requestCombinate(
+                            _is2350,
+                            _choController.text,
+                            _joongController.text,
+                            _jongController.text);
+                        setState(() {
+                          _resultTextController.text = result;
+                          _resultCount = result.length;
+                        });
+                      },
+                      child: const Text('추출하기'))),
               SizedBox(
                   width: 1000,
                   child: Padding(
@@ -63,12 +84,13 @@ class _JasoHomeState extends State<JasoHome> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Text('글자수 : '),
+                        Text('글자수 : $_resultCount'),
                         TextField(
+                          controller: _resultTextController,
                           readOnly: true,
                           maxLines: 15,
-                          decoration:
-                              InputDecoration(border: OutlineInputBorder()),
+                          decoration: const InputDecoration(
+                              border: const OutlineInputBorder()),
                         ),
                       ],
                     ),
@@ -78,13 +100,13 @@ class _JasoHomeState extends State<JasoHome> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(10.0),
-                    child:
-                        ElevatedButton(onPressed: () {}, child: Text('Clear')),
+                    child: ElevatedButton(
+                        onPressed: () {}, child: const Text('Clear')),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: ElevatedButton(
-                        onPressed: () {}, child: Text('Save as .txt')),
+                        onPressed: () {}, child: const Text('Save as .txt')),
                   )
                 ],
               )
@@ -109,10 +131,11 @@ class _JasoHomeState extends State<JasoHome> {
             padding: const EdgeInsets.all(10.0),
             child: Column(
               children: [
-                Text('초성'),
+                const Text('초성'),
                 SizedBox(
                   width: 300,
                   child: TextField(
+                    controller: _choController,
                     textAlign: TextAlign.center,
                   ),
                 )
@@ -123,10 +146,11 @@ class _JasoHomeState extends State<JasoHome> {
             padding: const EdgeInsets.all(10.0),
             child: Column(
               children: [
-                Text('중성'),
+                const Text('중성'),
                 SizedBox(
                   width: 300,
                   child: TextField(
+                    controller: _joongController,
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -137,10 +161,11 @@ class _JasoHomeState extends State<JasoHome> {
             padding: const EdgeInsets.all(10.0),
             child: Column(
               children: [
-                Text('종성'),
+                const Text('종성'),
                 SizedBox(
                   width: 300,
                   child: TextField(
+                    controller: _jongController,
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -157,13 +182,14 @@ class _JasoHomeState extends State<JasoHome> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('초성'),
-                SizedBox(
+                const Text('초성'),
+                const SizedBox(
                   width: 10,
                 ),
                 SizedBox(
                   width: 300,
                   child: TextField(
+                    controller: _choController,
                     textAlign: TextAlign.start,
                   ),
                 )
@@ -175,13 +201,14 @@ class _JasoHomeState extends State<JasoHome> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('중성'),
-                SizedBox(
+                const Text('중성'),
+                const SizedBox(
                   width: 10,
                 ),
                 SizedBox(
                   width: 300,
                   child: TextField(
+                    controller: _joongController,
                     textAlign: TextAlign.start,
                   ),
                 )
@@ -193,13 +220,14 @@ class _JasoHomeState extends State<JasoHome> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('종성'),
-                SizedBox(
+                const Text('종성'),
+                const SizedBox(
                   width: 10,
                 ),
                 SizedBox(
                   width: 300,
                   child: TextField(
+                    controller: _jongController,
                     textAlign: TextAlign.start,
                   ),
                 )
