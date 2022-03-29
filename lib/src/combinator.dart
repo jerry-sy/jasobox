@@ -1,81 +1,7 @@
 import 'package:jaso/src/cp949_converter.dart';
+import 'package:jaso/src/jaso_list.dart' show choArr, joongArr, jongArr;
 
 class Combinator {
-  final List<String> _choArr = [
-    'ㄱ',
-    'ㄲ',
-    'ㄴ',
-    'ㄷ',
-    'ㄸ',
-    'ㄹ',
-    'ㅁ',
-    'ㅂ',
-    'ㅃ',
-    'ㅅ',
-    'ㅆ',
-    'ㅇ',
-    'ㅈ',
-    'ㅉ',
-    'ㅊ',
-    'ㅋ',
-    'ㅌ',
-    'ㅍ',
-    'ㅎ'
-  ];
-  final List<String> _joongArr = [
-    'ㅏ',
-    'ㅐ',
-    'ㅑ',
-    'ㅒ',
-    'ㅓ',
-    'ㅔ',
-    'ㅕ',
-    'ㅖ',
-    'ㅗ',
-    'ㅘ',
-    'ㅙ',
-    'ㅚ',
-    'ㅛ',
-    'ㅜ',
-    'ㅝ',
-    'ㅞ',
-    'ㅟ',
-    'ㅠ',
-    'ㅡ',
-    'ㅢ',
-    'ㅣ'
-  ];
-  final List<String> _jongArr = [
-    '',
-    'ㄱ',
-    'ㄲ',
-    'ㄳ',
-    'ㄴ',
-    'ㄵ',
-    'ㄶ',
-    'ㄷ',
-    'ㄹ',
-    'ㄺ',
-    'ㄻ',
-    'ㄼ',
-    'ㄽ',
-    'ㄾ',
-    'ㄿ',
-    'ㅀ',
-    'ㅁ',
-    'ㅂ',
-    'ㅄ',
-    'ㅅ',
-    'ㅆ',
-    'ㅇ',
-    'ㅈ',
-    'ㅊ',
-    'ㅋ',
-    'ㅌ',
-    'ㅍ',
-    'ㅎ'
-  ];
-
   List<String> combinateJaso(List<String>? cho, List<String>? joong,
       List<String>? jong, bool useCP949) {
     List<int> choList = _getChoCodeList(cho);
@@ -110,27 +36,27 @@ class Combinator {
   List<int> _getChoCodeList(List<String>? cho) {
     //TODO INPUT VALID CHECK
     if (cho == null || cho.isEmpty) {
-      return _choArr.asMap().keys.toList();
+      return choArr.asMap().keys.toList();
     } else {
-      return cho.asMap().values.map((e) => _choArr.indexOf(e)).toList();
+      return cho.asMap().values.map((e) => choArr.indexOf(e)).toList();
     }
   }
 
   List<int> _getJoongCodeList(List<String>? joong) {
     //TODO INPUT VALID CHECK
     if (joong == null || joong.isEmpty) {
-      return _joongArr.asMap().keys.toList();
+      return joongArr.asMap().keys.toList();
     } else {
-      return joong.asMap().values.map((e) => _joongArr.indexOf(e)).toList();
+      return joong.asMap().values.map((e) => joongArr.indexOf(e)).toList();
     }
   }
 
   List<int> _getJongCodeList(List<String>? jong) {
     //TODO INPUT VALID CHECK
     if (jong == null || jong.isEmpty) {
-      return _jongArr.asMap().keys.toList();
+      return jongArr.asMap().keys.toList();
     } else {
-      return jong.asMap().values.map((e) => _jongArr.indexOf(e)).toList();
+      return jong.asMap().values.map((e) => jongArr.indexOf(e)).toList();
     }
   }
 }
