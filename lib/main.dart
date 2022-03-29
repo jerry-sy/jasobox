@@ -66,14 +66,18 @@ class _JasoHomeState extends State<JasoHome> {
                   height: 50,
                   child: ElevatedButton(
                       onPressed: () async {
-                        String result = await _useCase.requestCombinate(
-                            _is2350,
-                            _choController.text,
-                            _joongController.text,
-                            _jongController.text);
+                        CombinateResultData combResult =
+                            await _useCase.requestCombinate(
+                                _is2350,
+                                _choController.text,
+                                _joongController.text,
+                                _jongController.text);
                         setState(() {
-                          _resultTextController.text = result;
-                          _resultCount = result.length;
+                          _choController.text = combResult.inputCho;
+                          _joongController.text = combResult.inputJoong;
+                          _jongController.text = combResult.inputJong;
+                          _resultTextController.text = combResult.result;
+                          _resultCount = combResult.result.length;
                         });
                       },
                       child: const Text('추출하기'))),

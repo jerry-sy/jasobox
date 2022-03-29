@@ -59,4 +59,16 @@ class Combinator {
       return jong.asMap().values.map((e) => jongArr.indexOf(e)).toList();
     }
   }
+
+  List<String> filterValidCho(List<String> rawList) {
+    return rawList.where((element) => choArr.contains(element)).toList();
+  }
+
+  List<String> filterValidJoong(List<String> rawList) {
+    return rawList.where((element) => joongArr.contains(element)).toList();
+  }
+
+  List<String> filterValidJong(List<String> rawList) {
+    return rawList.where((element) => jongArr.contains(element)).toList();
+  }
 }
