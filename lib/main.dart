@@ -101,7 +101,10 @@ class _JasoHomeState extends State<JasoHome> {
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: ElevatedButton(
-                        onPressed: () {}, child: const Text('Clear')),
+                        onPressed: () {
+                          clear();
+                        },
+                        child: const Text('Clear')),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(10.0),
@@ -113,6 +116,17 @@ class _JasoHomeState extends State<JasoHome> {
             ],
           ),
         ));
+  }
+
+  void clear() {
+    setState(() {
+      _resultCount = 0;
+      _is2350 = false;
+      _choController.clear();
+      _joongController.clear();
+      _jongController.clear();
+      _resultTextController.clear();
+    });
   }
 
   Widget _getInputWidget(BuildContext context) {
