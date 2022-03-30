@@ -84,7 +84,8 @@ class _JasoHomeState extends State<JasoHome> {
               SizedBox(
                   width: 1000,
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 50.0),
+                    padding: const EdgeInsets.only(
+                        left: 10.0, top: 40.0, right: 10.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
@@ -99,23 +100,26 @@ class _JasoHomeState extends State<JasoHome> {
                       ],
                     ),
                   )),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          clear();
-                        },
-                        child: const Text('Clear')),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: ElevatedButton(
-                        onPressed: () {}, child: const Text('Save as .txt')),
-                  )
-                ],
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: ElevatedButton(
+                          onPressed: () {
+                            clear();
+                          },
+                          child: const Text('Clear')),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: ElevatedButton(
+                          onPressed: () {}, child: const Text('Save as .txt')),
+                    )
+                  ],
+                ),
               )
             ],
           ),
