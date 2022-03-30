@@ -3,7 +3,7 @@ import 'package:jaso/src/combinator.dart';
 class UseCase {
   final Combinator _combinator = Combinator();
   Future<CombinateResultData> requestCombinate(
-      bool is2350, String cho, String joong, String jong) async {
+      bool is2350, bool is430, String cho, String joong, String jong) async {
     List<String> inputCho = _combinator.filterValidCho(cho.split(''));
     List<String> inputJoong = _combinator.filterValidJoong(joong.split(''));
     List<String> inputJong = _combinator.filterValidJong(jong.split(''));
@@ -13,7 +13,7 @@ class UseCase {
         inputJoong.join(''),
         inputJong.join(''),
         _combinator
-            .combinateJaso(inputCho, inputJoong, inputJong, is2350, false)
+            .combinateJaso(inputCho, inputJoong, inputJong, is2350, is430)
             .join(''));
   }
 }

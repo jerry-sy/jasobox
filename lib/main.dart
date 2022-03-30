@@ -27,7 +27,8 @@ class JasoHome extends StatefulWidget {
 
 class _JasoHomeState extends State<JasoHome> {
   int _resultCount = 0;
-  bool _is2350 = false;
+  bool _option2350 = false;
+  bool _option430 = false;
   final _choController = TextEditingController();
   final _joongController = TextEditingController();
   final _jongController = TextEditingController();
@@ -44,48 +45,62 @@ class _JasoHomeState extends State<JasoHome> {
           child: Column(
             children: [
               _getInputWidget(context),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 50),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Checkbox(
-                        value: _is2350,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            if (value == null) _is2350 = false;
-                            _is2350 = value!;
-                          });
-                        }),
-                    const Text('2350자만 추출 (CP949 encoding)')
-                  ],
-                ),
-              ),
-              SizedBox(
-                  width: 150,
-                  height: 50,
-                  child: ElevatedButton(
-                      onPressed: () async {
-                        CombinateResultData combResult =
-                            await _useCase.requestCombinate(
-                                _is2350,
-                                _choController.text,
-                                _joongController.text,
-                                _jongController.text);
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Checkbox(
+                      value: _option2350,
+                      onChanged: (bool? value) {
                         setState(() {
-                          _choController.text = combResult.inputCho;
-                          _joongController.text = combResult.inputJoong;
-                          _jongController.text = combResult.inputJong;
-                          _resultTextController.text = combResult.result;
-                          _resultCount = combResult.result.length;
+                          if (value == null) _option2350 = false;
+                          _option2350 = value!;
                         });
-                      },
-                      child: const Text('추출하기'))),
+                      }),
+                  const Text('2350자 (CP949 encoding)')
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Checkbox(
+                      value: _option430,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          if (value == null) _option430 = false;
+                          _option430 = value!;
+                        });
+                      }),
+                  const Text('430자 (Adobe-KR-9 collection)')
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 30.0, bottom: 30.0),
+                child: SizedBox(
+                    width: 150,
+                    height: 50,
+                    child: ElevatedButton(
+                        onPressed: () async {
+                          CombinateResultData combResult =
+                              await _useCase.requestCombinate(
+                                  _option2350,
+                                  _option430,
+                                  _choController.text,
+                                  _joongController.text,
+                                  _jongController.text);
+                          setState(() {
+                            _choController.text = combResult.inputCho;
+                            _joongController.text = combResult.inputJoong;
+                            _jongController.text = combResult.inputJong;
+                            _resultTextController.text = combResult.result;
+                            _resultCount = combResult.result.length;
+                          });
+                        },
+                        child: const Text('추출하기'))),
+              ),
               SizedBox(
                   width: 1000,
                   child: Padding(
-                    padding: const EdgeInsets.only(
-                        left: 10.0, top: 40.0, right: 10.0),
+                    padding: const EdgeInsets.all(10.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
@@ -129,7 +144,8 @@ class _JasoHomeState extends State<JasoHome> {
   void clear() {
     setState(() {
       _resultCount = 0;
-      _is2350 = false;
+      _option2350 = false;
+      _option430 = false;
       _choController.clear();
       _joongController.clear();
       _jongController.clear();
