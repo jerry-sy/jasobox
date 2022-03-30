@@ -1,9 +1,10 @@
+import 'package:jaso/src/adobe_kr_9_list.dart' show list_430;
 import 'package:jaso/src/cp949_converter.dart';
 import 'package:jaso/src/jaso_list.dart' show choArr, joongArr, jongArr;
 
 class Combinator {
   List<String> combinateJaso(List<String>? cho, List<String>? joong,
-      List<String>? jong, bool useCP949) {
+      List<String>? jong, bool useCP949, bool include430) {
     List<int> choList = _getChoCodeList(cho);
     List<int> joongList = _getJoongCodeList(joong);
     List<int> jongList = _getJongCodeList(jong);
@@ -17,8 +18,12 @@ class Combinator {
         }
       }
     }
-    if (useCP949) {
+    if (useCP949 && include430) {
+      return _extract2780(resultList);
+    } else if (useCP949 && !include430) {
       return _extract2350(resultList);
+    } else if (!useCP949 && include430) {
+      return _extract430(resultList);
     } else {
       return resultList;
     }
@@ -26,15 +31,48 @@ class Combinator {
 
   final CP949 _cp = CP949();
 
+  List<String> _extract2780(List<String> fullList) {
+    /**
+     * 2350 + 430 옵션 : CP949 인코딩 + 430자에 해당하는 글자 모두 return
+     * @param fullList : 11172자로 추출된 full list
+     */
+    return fullList
+        .map((e) => apply430Option(e))
+        .where((element) => element.isNotEmpty)
+        .toList();
+  }
+
+  String apply430Option(String e) {
+    /**
+     * 결과 중 430자 해당하는 글자는 그대로 출력되도록 스킵한다
+     */
+    if (list_430.contains(e)) {
+      return e;
+    } else {
+      return _cp.decode(_cp.encode(e));
+    }
+  }
+
   List<String> _extract2350(List<String> fullList) {
+    /**
+     * 2350 옵션 : CP949 인코딩으로 정상 표현되는 글자만 return
+     * @param fullList : 11172자로 추출된 full list
+     */
     return fullList
         .map((e) => _cp.decode(_cp.encode(e)))
         .where((element) => element.isNotEmpty)
         .toList();
   }
 
+  List<String> _extract430(List<String> fullList) {
+    /**
+     * 430 옵션 : 430자에 해당하는 글자만 return
+     * @param fullList : 11172자로 추출된 full list
+     */
+    return fullList.where((element) => list_430.contains(element)).toList();
+  }
+
   List<int> _getChoCodeList(List<String>? cho) {
-    //TODO INPUT VALID CHECK
     if (cho == null || cho.isEmpty) {
       return choArr.asMap().keys.toList();
     } else {
@@ -43,7 +81,6 @@ class Combinator {
   }
 
   List<int> _getJoongCodeList(List<String>? joong) {
-    //TODO INPUT VALID CHECK
     if (joong == null || joong.isEmpty) {
       return joongArr.asMap().keys.toList();
     } else {
@@ -52,7 +89,6 @@ class Combinator {
   }
 
   List<int> _getJongCodeList(List<String>? jong) {
-    //TODO INPUT VALID CHECK
     if (jong == null || jong.isEmpty) {
       return jongArr.asMap().keys.toList();
     } else {

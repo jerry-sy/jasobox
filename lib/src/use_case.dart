@@ -13,7 +13,7 @@ class UseCase {
         inputJoong.join(''),
         inputJong.join(''),
         _combinator
-            .combinateJaso(inputCho, inputJoong, inputJong, is2350)
+            .combinateJaso(inputCho, inputJoong, inputJong, is2350, false)
             .join(''));
   }
 }
