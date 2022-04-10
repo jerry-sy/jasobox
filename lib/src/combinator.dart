@@ -4,10 +4,11 @@ import 'package:jaso/src/jaso_list.dart' show choArr, joongArr, jongArr;
 
 class Combinator {
   List<String> combinateJaso(List<String>? cho, List<String>? joong,
-      List<String>? jong, bool useCP949, bool include430) {
+      List<String>? jong, bool useCP949, bool include430, bool onlyJong) {
     List<int> choList = _getChoCodeList(cho);
     List<int> joongList = _getJoongCodeList(joong);
-    List<int> jongList = _getJongCodeList(jong);
+    List<int> jongList =
+        onlyJong ? [jongArr.asMap().keys.first] : _getJongCodeList(jong);
 
     List<String> resultList = [];
     for (var choCode in choList) {

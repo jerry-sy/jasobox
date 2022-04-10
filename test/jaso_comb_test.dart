@@ -11,27 +11,30 @@ void main() {
     List<String> cho = ['ㅎ'];
     List<String> joong = ['ㅏ'];
     List<String> jong = ['ㄴ'];
-    var result = combinator.combinateJaso(cho, joong, jong, false, false);
+    var result =
+        combinator.combinateJaso(cho, joong, jong, false, false, false);
     expect(result, ['한']);
   });
 
   test('ㅎㅏ', () {
     List<String> cho = ['ㅎ'];
     List<String> joong = ['ㅏ'];
-    var result = combinator.combinateJaso(cho, joong, null, false, false);
+    var result =
+        combinator.combinateJaso(cho, joong, null, false, false, false);
     expect(result.length, 28);
   });
 
   test('ㅎ', () {
     List<String> cho = ['ㅎ'];
-    var result = combinator.combinateJaso(cho, null, null, false, false);
+    var result = combinator.combinateJaso(cho, null, null, false, false, false);
     expect(result.length, 588);
   });
 
   test('ㅍ / ㅔ ㅐ ㅖ', () {
     List<String> cho = ['ㅍ'];
     List<String> joong = ['ㅔ', 'ㅐ', 'ㅖ'];
-    var result = combinator.combinateJaso(cho, joong, null, false, false);
+    var result =
+        combinator.combinateJaso(cho, joong, null, false, false, false);
     expect(result.length, 84);
   });
 
@@ -39,7 +42,8 @@ void main() {
     List<String> cho = ['ㅍ'];
     List<String> joong = ['ㅔ', 'ㅐ', 'ㅖ'];
     List<String> jong = ['ㄴ'];
-    var result = combinator.combinateJaso(cho, joong, jong, false, false);
+    var result =
+        combinator.combinateJaso(cho, joong, jong, false, false, false);
     expect(result, ['펜', '팬', '폔']);
   });
 
@@ -47,42 +51,43 @@ void main() {
     List<String> cho = ['ㅍ'];
     List<String> joong = ['ㅔ', 'ㅐ', 'ㅖ'];
     List<String> jong = ['ㄴ'];
-    var result = combinator.combinateJaso(cho, joong, jong, true, false);
+    var result = combinator.combinateJaso(cho, joong, jong, true, false, false);
     expect(result, ['펜', '팬']);
   });
 
   test('cp949_2_1', () {
     List<String> cho = ['ㅂ'];
     List<String> joong = ['ㅓ', 'ㅏ'];
-    var result = combinator.combinateJaso(cho, joong, null, false, false);
+    var result =
+        combinator.combinateJaso(cho, joong, null, false, false, false);
     expect(result.length, 56);
   });
 
   test('cp949_2_2', () {
     List<String> cho = ['ㅂ'];
     List<String> joong = ['ㅓ', 'ㅏ'];
-    var result = combinator.combinateJaso(cho, joong, null, true, false);
+    var result = combinator.combinateJaso(cho, joong, null, true, false, false);
     expect(result.length, 26);
   });
 
   test('2780 옵션 1', () {
     List<String> cho = ['ㅂ'];
     List<String> joong = ['ㅓ', 'ㅏ'];
-    var result = combinator.combinateJaso(cho, joong, null, true, true);
+    var result = combinator.combinateJaso(cho, joong, null, true, true, false);
     expect(result.length, 32);
   });
 
   test('2780 옵션 2', () {
     List<String> cho = ['ㅎ'];
     List<String> joong = ['ㅗ', 'ㅛ'];
-    var result = combinator.combinateJaso(cho, joong, null, true, true);
+    var result = combinator.combinateJaso(cho, joong, null, true, true, false);
     expect(result.length, 16);
   });
 
   test('430 옵션 1', () {
     List<String> cho = ['ㅂ'];
     List<String> joong = ['ㅓ', 'ㅏ'];
-    var result = combinator.combinateJaso(cho, joong, null, false, true);
+    var result = combinator.combinateJaso(cho, joong, null, false, true, false);
     print(result);
     expect(result.length, 6);
   });
@@ -90,7 +95,7 @@ void main() {
   test('430 옵션 2', () {
     List<String> cho = ['ㅎ'];
     List<String> joong = ['ㅗ', 'ㅛ'];
-    var result = combinator.combinateJaso(cho, joong, null, false, true);
+    var result = combinator.combinateJaso(cho, joong, null, false, true, false);
     print(result);
     expect(result.length, 1);
   });
@@ -114,5 +119,22 @@ void main() {
     var result = combinator.filterValidJong(jong);
     print(result);
     expect(result.length, 2);
+  });
+
+  test('종성 없는 글자만 보기 1', () {
+    List<String> cho = ['ㅍ'];
+    List<String> joong = ['ㅔ', 'ㅐ', 'ㅖ'];
+    var result = combinator.combinateJaso(cho, joong, null, true, false, true);
+    print(result);
+    expect(result.length, 3);
+  });
+
+  test('종성 없는 글자만 보기 2', () {
+    List<String> cho = ['ㅍ'];
+    List<String> joong = ['ㅔ', 'ㅐ', 'ㅖ'];
+    List<String> jong = ['ㄴ'];
+    var result = combinator.combinateJaso(cho, joong, null, true, false, true);
+    print(result);
+    expect(result.length, 3);
   });
 }

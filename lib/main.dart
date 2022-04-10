@@ -29,6 +29,7 @@ class _JasoHomeState extends State<JasoHome> {
   int _resultCount = 0;
   bool _option2350 = false;
   bool _option430 = false;
+  bool _optionJong = false;
   final _choController = TextEditingController();
   final _joongController = TextEditingController();
   final _jongController = TextEditingController();
@@ -73,6 +74,20 @@ class _JasoHomeState extends State<JasoHome> {
                   const Text('430자 (Adobe-KR-9 collection)')
                 ],
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Checkbox(
+                      value: _optionJong,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          if (value == null) _optionJong = false;
+                          _optionJong = value!;
+                        });
+                      }),
+                  const Text('종성 없는 글자만 보기')
+                ],
+              ),
               Padding(
                 padding: const EdgeInsets.only(top: 30.0, bottom: 30.0),
                 child: SizedBox(
@@ -84,6 +99,7 @@ class _JasoHomeState extends State<JasoHome> {
                               await _useCase.requestCombinate(
                                   _option2350,
                                   _option430,
+                                  _optionJong,
                                   _choController.text,
                                   _joongController.text,
                                   _jongController.text);
