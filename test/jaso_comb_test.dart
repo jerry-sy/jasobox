@@ -94,4 +94,25 @@ void main() {
     print(result);
     expect(result.length, 1);
   });
+
+  test('유효한 입력 초성', () {
+    List<String> cho = ['ㄱ', 'ㅎ', 'ㅎ'];
+    var result = combinator.filterValidCho(cho);
+    print(result);
+    expect(result.length, 2);
+  });
+
+  test('유효한 입력 중성', () {
+    List<String> joong = ['ㅗ', 'ㅛ', 'ㅛ', 'ㅛ'];
+    var result = combinator.filterValidJoong(joong);
+    print(result);
+    expect(result.length, 2);
+  });
+
+  test('유효한 입력 종성', () {
+    List<String> jong = ['ㅇ', 'ㅇ', 'ㅅ', 'ㅅ'];
+    var result = combinator.filterValidJong(jong);
+    print(result);
+    expect(result.length, 2);
+  });
 }

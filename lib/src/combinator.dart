@@ -97,14 +97,24 @@ class Combinator {
   }
 
   List<String> filterValidCho(List<String> rawList) {
-    return rawList.where((element) => choArr.contains(element)).toList();
+    return rawList
+        .where((element) => choArr.contains(element))
+        .toSet()
+        .toList();
   }
 
   List<String> filterValidJoong(List<String> rawList) {
-    return rawList.where((element) => joongArr.contains(element)).toList();
+    return rawList
+        .where((element) => joongArr.contains(element))
+        .toSet()
+        .toList();
   }
 
   List<String> filterValidJong(List<String> rawList) {
-    return rawList.where((element) => jongArr.contains(element)).toList();
+    return rawList
+        .toSet()
+        .where((element) => jongArr.contains(element))
+        .toSet()
+        .toList();
   }
 }
