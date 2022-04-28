@@ -2,6 +2,7 @@ import 'package:jaso/src/combinator.dart';
 
 class UseCase {
   final Combinator _combinator = Combinator();
+  // positional parameter 대신, parameter object 혹은 named parameter 사용하여 정리하는건 어떨까요?
   Future<CombinateResultData> requestCombinate(bool is2350, bool is430,
       bool isOnlyJong, String cho, String joong, String jong) async {
     List<String> inputCho = _combinator.filterValidCho(cho.split(''));
@@ -10,7 +11,7 @@ class UseCase {
         isOnlyJong ? List.empty() : _combinator.filterValidJong(jong.split(''));
 
     return CombinateResultData(
-        inputCho.join(''),
+        inputCho.join(''), // 그냥 cho 쓰는거랑 차이가 있어요?
         inputJoong.join(''),
         inputJong.join(''),
         _combinator
