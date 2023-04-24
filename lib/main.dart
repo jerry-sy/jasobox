@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jaso/src/main_ui.dart';
 import 'package:jaso/src/use_case.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: '자소조합기',
       theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
+        primarySwatch: Colors.grey,
       ),
       home: JasoHome(),
     );
@@ -33,144 +34,225 @@ class _JasoHomeState extends State<JasoHome> {
   int _resultCount = 0;
   bool _option2350 = false;
   bool _option430 = false;
+  bool _optionExceptJong = false;
   bool _optionJong = false;
   final _choController = TextEditingController();
   final _joongController = TextEditingController();
   final _jongController = TextEditingController();
   final _resultTextController = TextEditingController();
   final _useCase = UseCase();
+  String _appVersion = '';
 
   @override
   Widget build(BuildContext context) {
-    String _appVersion = '';
     return FutureBuilder(
       future: getVersion().then((value) => _appVersion = value),
       builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+        bool isVertical = MediaQuery.of(context).size.width < 750;
         return Scaffold(
-            appBar: AppBar(
-              title: const Text('자소조합기'),
-            ),
             body: SingleChildScrollView(
-              child: Column(
-                children: [
-                  _getInputWidget(context),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Checkbox(
-                          value: _option2350,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              if (value == null) _option2350 = false;
-                              _option2350 = value!;
-                            });
-                          }),
-                      const Text('2350자 (CP949 encoding)')
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Checkbox(
-                          value: _option430,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              if (value == null) _option430 = false;
-                              _option430 = value!;
-                            });
-                          }),
-                      const Text('430자 (Adobe-KR-9 collection)')
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Checkbox(
-                          value: _optionJong,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              if (value == null) _optionJong = false;
-                              _optionJong = value!;
-                            });
-                          }),
-                      const Text('종성 없는 글자만 보기')
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 30.0, bottom: 30.0),
-                    child: SizedBox(
-                        width: 150,
-                        height: 50,
-                        child: ElevatedButton(
-                            onPressed: () async {
-                              CombinateResultData combResult =
-                                  await _useCase.requestCombinate(
-                                      _option2350,
-                                      _option430,
-                                      _optionJong,
-                                      _choController.text,
-                                      _joongController.text,
-                                      _jongController.text);
-                              setState(() {
-                                _choController.text = combResult.inputCho;
-                                _joongController.text = combResult.inputJoong;
-                                _jongController.text = combResult.inputJong;
-                                _resultTextController.text = combResult.result;
-                                _resultCount = combResult.result.length;
-                              });
-                            },
-                            child: const Text('추출하기'))),
-                  ),
-                  SizedBox(
-                      width: 1000,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text('글자수 : $_resultCount'),
-                            TextField(
-                              controller: _resultTextController,
-                              readOnly: true,
-                              maxLines: 15,
-                              decoration: const InputDecoration(
-                                  border: const OutlineInputBorder()),
-                            ),
-                          ],
-                        ),
-                      )),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: ElevatedButton(
-                              onPressed: () {
-                                clear();
-                              },
-                              child: const Text('Clear')),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: ElevatedButton(
-                              onPressed: () {},
-                              child: const Text('Save as .txt')),
-                        )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Text('v$_appVersion'),
-                  )
-                ],
-              ),
-            ));
+          child: isVertical
+              ? Column(
+                  children: contents(),
+                )
+              : Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: contents()
+                      .map((e) => Flexible(
+                            child: e,
+                            flex: 1,
+                          ))
+                      .toList(),
+                ),
+        ));
       },
     );
   }
+
+  List<Widget> contents() => [
+        firstStepColumn(
+            // step 1
+            _choController,
+            _joongController,
+            _jongController),
+        Container(
+          constraints: const BoxConstraints(minHeight: 550),
+          child: Wrap(
+            // step 2
+            children: [
+              Container(
+                padding: const EdgeInsets.all(5.0),
+                alignment: Alignment.topLeft,
+                decoration: const BoxDecoration(color: Colors.black26),
+                child: const Text(
+                  'Step2',
+                  style: TextStyle(
+                      fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.w900,
+                      fontSize: 30),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(15),
+                child: Wrap(
+                  runSpacing: 20,
+                  children: [
+                    Row(
+                      children: [
+                        Checkbox(
+                            value: _option2350,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                if (value == null) _option2350 = false;
+                                _option2350 = value!;
+                              });
+                            }),
+                        const Text('2350자 (CP949 encoding)')
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Checkbox(
+                            value: _option430,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                if (value == null) _option430 = false;
+                                _option430 = value!;
+                              });
+                            }),
+                        const Text('430자 (Adobe-KR-9 collection)')
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Checkbox(
+                            value: _optionExceptJong,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                if (value == null) _optionExceptJong = false;
+                                _optionExceptJong = value!;
+                              });
+                            }),
+                        const Text('종성 없는 글자만 보기')
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Checkbox(
+                            value: _optionJong,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                if (value == null) _optionJong = false;
+                                _optionJong = value!;
+                              });
+                            }),
+                        const Text('종성 있는 글자만 보기')
+                      ],
+                    ),
+                    Expanded(
+                      child: Container(
+                        alignment: Alignment.bottomCenter,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 150),
+                          child: TextButton(
+                              style: TextButton.styleFrom(
+                                  shape: const RoundedRectangleBorder(),
+                                  backgroundColor: Colors.black,
+                                  foregroundColor: Colors.white,
+                                  minimumSize: const Size.fromHeight(50)),
+                              onPressed: () async {
+                                CombinateResultData combResult =
+                                    await _useCase.requestCombinate(
+                                        _option2350,
+                                        _option430,
+                                        _optionExceptJong,
+                                        _choController.text,
+                                        _joongController.text,
+                                        _jongController.text);
+                                setState(() {
+                                  _choController.text = combResult.inputCho;
+                                  _joongController.text = combResult.inputJoong;
+                                  _jongController.text = combResult.inputJong;
+                                  _resultTextController.text =
+                                      combResult.result;
+                                  _resultCount = combResult.result.length;
+                                });
+                              },
+                              child: const Padding(
+                                padding: EdgeInsets.all(15.0),
+                                child: Text('추출하기'),
+                              )),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        Column(
+          // step 3
+          children: [
+            Container(
+              padding: const EdgeInsets.all(5.0),
+              alignment: Alignment.topLeft,
+              decoration: const BoxDecoration(color: Colors.black38),
+              child: const Text(
+                'Step3',
+                style: TextStyle(
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 30),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: Wrap(
+                runSpacing: 20,
+                children: [
+                  SizedBox(
+                      width: 1000,
+                      child: TextField(
+                        controller: _resultTextController,
+                        readOnly: true,
+                        maxLines: 15,
+                        decoration:
+                            const InputDecoration(border: OutlineInputBorder()),
+                      )),
+                  Text('글자수 : $_resultCount'),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 50.0),
+                    child: OutlinedButton(
+                        style: TextButton.styleFrom(
+                            shape: const RoundedRectangleBorder(),
+                            minimumSize: const Size.fromHeight(50)),
+                        onPressed: () {
+                          clear();
+                        },
+                        child: Wrap(
+                          alignment: WrapAlignment.center,
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          spacing: 10,
+                          children: const [
+                            Icon(Icons.refresh),
+                            Text(
+                              'All clear',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            )
+                          ],
+                        )),
+                  ),
+                  Text('v$_appVersion'),
+                  const SizedBox(
+                    height: 130,
+                  )
+                ],
+              ),
+            ),
+          ],
+        )
+      ];
 
   Future<String> getVersion() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
