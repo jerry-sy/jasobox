@@ -1,6 +1,6 @@
 import 'package:jaso/src/adobe_kr_9_list.dart' show list_430;
 import 'package:jaso/src/cp949_converter.dart';
-import 'package:jaso/src/jaso_list.dart' show choArr, joongArr, jongArr;
+import 'package:jaso/src/jaso_list.dart';
 
 class Combinator {
   List<String> combinateJaso(List<String>? cho, List<String>? joong,
@@ -8,7 +8,7 @@ class Combinator {
     List<int> choList = _getChoCodeList(cho);
     List<int> joongList = _getJoongCodeList(joong);
     List<int> jongList =
-        onlyJong ? [jongArr.asMap().keys.first] : _getJongCodeList(jong);
+        onlyJong ? [Jaso.jongArr.asMap().keys.first] : _getJongCodeList(jong);
 
     List<String> resultList = [];
     for (var choCode in choList) {
@@ -75,38 +75,38 @@ class Combinator {
 
   List<int> _getChoCodeList(List<String>? cho) {
     if (cho == null || cho.isEmpty) {
-      return choArr.asMap().keys.toList();
+      return Jaso.choArr.asMap().keys.toList();
     } else {
-      return cho.asMap().values.map((e) => choArr.indexOf(e)).toList();
+      return cho.asMap().values.map((e) => Jaso.choArr.indexOf(e)).toList();
     }
   }
 
   List<int> _getJoongCodeList(List<String>? joong) {
     if (joong == null || joong.isEmpty) {
-      return joongArr.asMap().keys.toList();
+      return Jaso.joongArr.asMap().keys.toList();
     } else {
-      return joong.asMap().values.map((e) => joongArr.indexOf(e)).toList();
+      return joong.asMap().values.map((e) => Jaso.joongArr.indexOf(e)).toList();
     }
   }
 
   List<int> _getJongCodeList(List<String>? jong) {
     if (jong == null || jong.isEmpty) {
-      return jongArr.asMap().keys.toList();
+      return Jaso.jongArr.asMap().keys.toList();
     } else {
-      return jong.asMap().values.map((e) => jongArr.indexOf(e)).toList();
+      return jong.asMap().values.map((e) => Jaso.jongArr.indexOf(e)).toList();
     }
   }
 
   List<String> filterValidCho(List<String> rawList) {
     return rawList
-        .where((element) => choArr.contains(element))
+        .where((element) => Jaso.choArr.contains(element))
         .toSet()
         .toList();
   }
 
   List<String> filterValidJoong(List<String> rawList) {
     return rawList
-        .where((element) => joongArr.contains(element))
+        .where((element) => Jaso.joongArr.contains(element))
         .toSet()
         .toList();
   }
@@ -114,8 +114,11 @@ class Combinator {
   List<String> filterValidJong(List<String> rawList) {
     return rawList
         .toSet()
-        .where((element) => jongArr.contains(element))
+        .where((element) => Jaso.jongArr.contains(element))
         .toSet()
         .toList();
   }
+
+  List<String> getSingleCho = Jaso.singleChoArr;
+  List<String> getDoubleCho = Jaso.doubleChoArr;
 }

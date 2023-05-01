@@ -5,6 +5,10 @@ Widget firstStepColumn(
   TextEditingController choController,
   TextEditingController joongController,
   TextEditingController jongController,
+{
+  void Function()? onClickDoubleCho,
+  void Function()? onClickSingleCho,
+}
 ) =>
     Container(
       constraints: const BoxConstraints(minHeight: 550),
@@ -33,10 +37,10 @@ Widget firstStepColumn(
                     subButtonsRow([
                       SubButtonProperty()
                         ..text = '낱자음'
-                        ..onClick = () {},
+                        ..onClick = onClickSingleCho,
                       SubButtonProperty()
                         ..text = '쌍자음'
-                        ..onClick = () {}
+                        ..onClick = onClickDoubleCho
                     ])),
                 firstStepItem(
                     '중성',

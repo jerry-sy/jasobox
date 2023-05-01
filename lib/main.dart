@@ -43,38 +43,19 @@ class _JasoHomeState extends State<JasoHome> {
   final _useCase = UseCase();
   String _appVersion = '';
 
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: getVersion().then((value) => _appVersion = value),
-      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-        bool isVertical = MediaQuery.of(context).size.width < 750;
-        return Scaffold(
-            body: SingleChildScrollView(
-          child: isVertical
-              ? Column(
-                  children: contents(),
-                )
-              : Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: contents()
-                      .map((e) => Flexible(
-                            child: e,
-                            flex: 1,
-                          ))
-                      .toList(),
-                ),
-        ));
-      },
-    );
-  }
-
   List<Widget> contents() => [
         firstStepColumn(
             // step 1
             _choController,
             _joongController,
-            _jongController),
+            _jongController,
+          onClickSingleCho: (){
+              _choController.text += _useCase.onClickSingleCho();
+          },
+          onClickDoubleCho: (){
+              _choController.text += _useCase.onClickDoubleCho();
+          },
+        ),
         Container(
           constraints: const BoxConstraints(minHeight: 550),
           child: Wrap(
@@ -253,6 +234,32 @@ class _JasoHomeState extends State<JasoHome> {
           ],
         )
       ];
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: getVersion().then((value) => _appVersion = value),
+      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+        bool isVertical = MediaQuery.of(context).size.width < 750;
+        return Scaffold(
+            body: SingleChildScrollView(
+          child: isVertical
+              ? Column(
+                  children: contents(),
+                )
+              : Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: contents()
+                      .map((e) => Flexible(
+                            child: e,
+                            flex: 1,
+                          ))
+                      .toList(),
+                ),
+        ));
+      },
+    );
+  }
 
   Future<String> getVersion() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
