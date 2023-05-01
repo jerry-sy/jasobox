@@ -91,7 +91,8 @@ Widget firstStepItem(String? title, TextEditingController textEditingController,
                       child: TextField(
                         controller: textEditingController,
                       ),
-                    )
+                    ),
+                    IconButton(onPressed: (){textEditingController.clear();}, icon: const Icon(Icons.clear))
                   ],
                 ),
               ),
