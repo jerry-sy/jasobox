@@ -121,4 +121,8 @@ class Combinator {
 
   List<String> getSingleCho = Jaso.singleChoArr;
   List<String> getDoubleCho = Jaso.doubleChoArr;
+
+  List<String> getHorizontalJoong = Jaso.horizontalJoongArr;
+  List<String> getVerticalJoong = Jaso.verticalJoongArr;
+  List<String> getMixedJoong = Jaso.mixedJoongArr;
 }

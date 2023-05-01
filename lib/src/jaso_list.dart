@@ -37,7 +37,7 @@ class Jaso {
 
 
 
-  static const List<String> joongArr = [
+  static const List<String> _joongArr = [
     'ㅏ',
     'ㅐ',
     'ㅑ',
@@ -60,6 +60,32 @@ class Jaso {
     'ㅢ',
     'ㅣ'
   ];
+
+  static final List<String> _horizontalJoongArr = [
+    'ㅏ',
+    'ㅐ',
+    'ㅑ',
+    'ㅒ',
+    'ㅓ',
+    'ㅔ',
+    'ㅕ',
+    'ㅖ',
+    'ㅣ'
+  ];
+
+  static final List<String> _verticalJoongArr = [
+    'ㅗ',
+    'ㅛ',
+    'ㅜ',
+    'ㅠ',
+    'ㅡ',
+  ];
+
+  static List<String> joongArr = _joongArr;
+  static List<String> horizontalJoongArr = _horizontalJoongArr;
+  static List<String> verticalJoongArr = _verticalJoongArr;
+  static List<String> mixedJoongArr = _joongArr.where((element) => !_horizontalJoongArr.contains(element) && !_verticalJoongArr.contains(element)).toList();
+
   static const List<String> jongArr = [
     '',
     'ㄱ',

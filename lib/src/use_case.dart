@@ -27,6 +27,18 @@ class UseCase {
   String onClickDoubleCho(){
     return _combinator.getDoubleCho.join();
   }
+
+  String onClickHorizontalJoong(){
+    return _combinator.getHorizontalJoong.join();
+  }
+
+  String onClickVerticalJoong(){
+    return _combinator.getVerticalJoong.join();
+  }
+
+  String onClickMixedJoong(){
+    return _combinator.getMixedJoong.join();
+  }
 }
 
 class CombinateResultData {

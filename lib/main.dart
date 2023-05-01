@@ -55,6 +55,9 @@ class _JasoHomeState extends State<JasoHome> {
           onClickDoubleCho: (){
               _choController.text += _useCase.onClickDoubleCho();
           },
+          onClickHorizontalJoong: (){_joongController.text += _useCase.onClickHorizontalJoong();},
+          onClickVerticalJoong: (){_joongController.text += _useCase.onClickVerticalJoong();},
+          onClickMixedJoong: (){_joongController.text += _useCase.onClickMixedJoong();},
         ),
         Container(
           constraints: const BoxConstraints(minHeight: 550),

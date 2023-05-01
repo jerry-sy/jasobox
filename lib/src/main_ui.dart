@@ -8,6 +8,9 @@ Widget firstStepColumn(
 {
   void Function()? onClickDoubleCho,
   void Function()? onClickSingleCho,
+  void Function()? onClickHorizontalJoong,
+  void Function()? onClickVerticalJoong,
+  void Function()? onClickMixedJoong,
 }
 ) =>
     Container(
@@ -48,13 +51,13 @@ Widget firstStepColumn(
                     subButtonsRow([
                       SubButtonProperty()
                         ..text = '가로모임'
-                        ..onClick = () {},
+                        ..onClick = onClickHorizontalJoong,
                       SubButtonProperty()
                         ..text = '세로모임'
-                        ..onClick = () {},
+                        ..onClick = onClickVerticalJoong,
                       SubButtonProperty()
                         ..text = '섞임모임'
-                        ..onClick = () {},
+                        ..onClick = onClickMixedJoong,
                     ])),
                 firstStepItem('종성', jongController, null),
               ],
