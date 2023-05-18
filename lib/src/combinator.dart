@@ -3,12 +3,17 @@ import 'package:jaso/src/cp949_converter.dart';
 import 'package:jaso/src/jaso_list.dart';
 
 class Combinator {
-  List<String> combinateJaso(List<String>? cho, List<String>? joong,
-      List<String>? jong, bool useCP949, bool include430, bool onlyJong) {
+  List<String> combinateJaso(
+      {List<String>? cho,
+      List<String>? joong,
+      List<String>? jong,
+      bool useCP949 = false,
+      bool include430 = false,
+      bool withoutJong = false,
+      bool withJong = false}) {
     List<int> choList = _getChoCodeList(cho);
     List<int> joongList = _getJoongCodeList(joong);
-    List<int> jongList =
-        onlyJong ? [Jaso.jongArr.asMap().keys.first] : _getJongCodeList(jong);
+    List<int> jongList = _getJongCodeList(withJong, withoutJong, jong);
 
     List<String> resultList = [];
     for (var choCode in choList) {
@@ -89,11 +94,20 @@ class Combinator {
     }
   }
 
-  List<int> _getJongCodeList(List<String>? jong) {
-    if (jong == null || jong.isEmpty) {
-      return Jaso.jongArr.asMap().keys.toList();
-    } else {
+  List<int> _getJongCodeList(
+      bool withJong, bool withoutJong, List<String>? jong) {
+    if (withoutJong == true && withJong == false) {
+      // case 1:  only without jong
+      return [Jaso.jongArr.asMap().keys.first];
+    } else if (withoutJong == false && withJong == true) {
+      // case 2: exclude without jong character
+      return Jaso.jongArr.asMap().keys.toList().sublist(1, Jaso.jongArr.length);
+    } else if (jong != null && jong.isNotEmpty) {
+      // case 3: only use input jong
       return jong.asMap().values.map((e) => Jaso.jongArr.indexOf(e)).toList();
+    } else {
+      // case 4: whole combination include without jong character
+      return Jaso.jongArr.asMap().keys.toList();
     }
   }
 
@@ -117,6 +131,26 @@ class Combinator {
         .where((element) => Jaso.jongArr.contains(element))
         .toSet()
         .toList();
+  }
+
+  List<String> getJong(
+      {bool withJong = false, bool withoutJong = false, List<String>? jong}) {
+    if (withoutJong == true && withJong == false) {
+      // case 1:  only without jong
+      return List.empty();
+    } else if (withoutJong == false && withJong == true) {
+      // case 2: exclude without jong character
+      return Jaso.jongArr.sublist(1, Jaso.jongArr.length);
+    } else if (jong != null &&
+        jong.isNotEmpty &&
+        withoutJong == false &&
+        withJong == false) {
+      // case 3: only use input jong
+      return filterValidJong(jong);
+    } else {
+      // case 4: whole combination
+      return List.empty();
+    }
   }
 
   List<String> getSingleCho = Jaso.singleChoArr;

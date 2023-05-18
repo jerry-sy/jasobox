@@ -35,7 +35,7 @@ class _JasoHomeState extends State<JasoHome> {
   bool _option2350 = false;
   bool _option430 = false;
   bool _optionExceptJong = false;
-  bool _optionJong = false;
+  bool _optionWithJong = false;
   final _choController = TextEditingController();
   final _joongController = TextEditingController();
   final _jongController = TextEditingController();
@@ -123,14 +123,14 @@ class _JasoHomeState extends State<JasoHome> {
                     Row(
                       children: [
                         Checkbox(
-                            value: _optionJong,
+                            value: _optionWithJong,
                             onChanged: (bool? value) {
                               setState(() {
-                                if (value == null) _optionJong = false;
-                                _optionJong = value!;
+                                if (value == null) _optionWithJong = false;
+                                _optionWithJong = value!;
                               });
                             }),
-                        const Text('종성 있는 글자만 보기')
+                        const Text('모든 종성 붙이기')
                       ],
                     ),
                     Expanded(
@@ -147,12 +147,13 @@ class _JasoHomeState extends State<JasoHome> {
                               onPressed: () async {
                                 CombinateResultData combResult =
                                     await _useCase.requestCombinate(
-                                        _option2350,
-                                        _option430,
-                                        _optionExceptJong,
-                                        _choController.text,
-                                        _joongController.text,
-                                        _jongController.text);
+                                        is2350: _option2350,
+                                        is430: _option430,
+                                        isWithoutJong: _optionExceptJong,
+                                        isWithJong: _optionWithJong,
+                                        cho: _choController.text,
+                                        joong: _joongController.text,
+                                        jong: _jongController.text);
                                 setState(() {
                                   _choController.text = combResult.inputCho;
                                   _joongController.text = combResult.inputJoong;
@@ -274,6 +275,8 @@ class _JasoHomeState extends State<JasoHome> {
       _resultCount = 0;
       _option2350 = false;
       _option430 = false;
+      _optionExceptJong = false;
+      _optionWithJong = false;
       _choController.clear();
       _joongController.clear();
       _jongController.clear();
