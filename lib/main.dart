@@ -211,7 +211,7 @@ class _JasoHomeState extends State<JasoHome> {
                           shape: const RoundedRectangleBorder(),
                           minimumSize: const Size.fromHeight(50)),
                       onPressed: () {
-
+                        _useCase.onClickCopyToClipboard(_resultTextController.text);
                       },
                       child: Wrap(
                         alignment: WrapAlignment.center,

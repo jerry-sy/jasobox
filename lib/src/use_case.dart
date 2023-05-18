@@ -1,4 +1,5 @@
 import 'package:jaso/src/combinator.dart';
+import 'package:flutter/services.dart';
 
 class UseCase {
   final Combinator _combinator = Combinator();
@@ -49,6 +50,11 @@ class UseCase {
 
   String onClickMixedJoong() {
     return _combinator.getMixedJoong.join();
+  }
+
+  Future onClickCopyToClipboard(String text) async {
+    await Clipboard.setData(ClipboardData(text: text));
+    // toast
   }
 }
 
