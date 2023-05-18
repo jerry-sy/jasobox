@@ -212,6 +212,9 @@ class _JasoHomeState extends State<JasoHome> {
                           minimumSize: const Size.fromHeight(50)),
                       onPressed: () {
                         _useCase.onClickCopyToClipboard(_resultTextController.text);
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text('Copied to Clipboard'),
+                        ));
                       },
                       child: Wrap(
                         alignment: WrapAlignment.center,
