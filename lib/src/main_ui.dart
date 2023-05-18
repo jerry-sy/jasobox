@@ -5,6 +5,13 @@ Widget firstStepColumn(
   TextEditingController choController,
   TextEditingController joongController,
   TextEditingController jongController,
+{
+  void Function()? onClickDoubleCho,
+  void Function()? onClickSingleCho,
+  void Function()? onClickHorizontalJoong,
+  void Function()? onClickVerticalJoong,
+  void Function()? onClickMixedJoong,
+}
 ) =>
     Container(
       constraints: const BoxConstraints(minHeight: 550),
@@ -33,10 +40,10 @@ Widget firstStepColumn(
                     subButtonsRow([
                       SubButtonProperty()
                         ..text = '낱자음'
-                        ..onClick = () {},
+                        ..onClick = onClickSingleCho,
                       SubButtonProperty()
                         ..text = '쌍자음'
-                        ..onClick = () {}
+                        ..onClick = onClickDoubleCho
                     ])),
                 firstStepItem(
                     '중성',
@@ -44,13 +51,13 @@ Widget firstStepColumn(
                     subButtonsRow([
                       SubButtonProperty()
                         ..text = '가로모임'
-                        ..onClick = () {},
+                        ..onClick = onClickHorizontalJoong,
                       SubButtonProperty()
                         ..text = '세로모임'
-                        ..onClick = () {},
+                        ..onClick = onClickVerticalJoong,
                       SubButtonProperty()
                         ..text = '섞임모임'
-                        ..onClick = () {},
+                        ..onClick = onClickMixedJoong,
                     ])),
                 firstStepItem('종성', jongController, null),
               ],
@@ -87,7 +94,8 @@ Widget firstStepItem(String? title, TextEditingController textEditingController,
                       child: TextField(
                         controller: textEditingController,
                       ),
-                    )
+                    ),
+                    IconButton(onPressed: (){textEditingController.clear();}, icon: const Icon(Icons.clear))
                   ],
                 ),
               ),

@@ -35,7 +35,7 @@ class _JasoHomeState extends State<JasoHome> {
   bool _option2350 = false;
   bool _option430 = false;
   bool _optionExceptJong = false;
-  bool _optionJong = false;
+  bool _optionWithJong = false;
   final _choController = TextEditingController();
   final _joongController = TextEditingController();
   final _jongController = TextEditingController();
@@ -43,38 +43,22 @@ class _JasoHomeState extends State<JasoHome> {
   final _useCase = UseCase();
   String _appVersion = '';
 
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: getVersion().then((value) => _appVersion = value),
-      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-        bool isVertical = MediaQuery.of(context).size.width < 750;
-        return Scaffold(
-            body: SingleChildScrollView(
-          child: isVertical
-              ? Column(
-                  children: contents(),
-                )
-              : Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: contents()
-                      .map((e) => Flexible(
-                            child: e,
-                            flex: 1,
-                          ))
-                      .toList(),
-                ),
-        ));
-      },
-    );
-  }
-
   List<Widget> contents() => [
         firstStepColumn(
             // step 1
             _choController,
             _joongController,
-            _jongController),
+            _jongController,
+          onClickSingleCho: (){
+              _choController.text += _useCase.onClickSingleCho();
+          },
+          onClickDoubleCho: (){
+              _choController.text += _useCase.onClickDoubleCho();
+          },
+          onClickHorizontalJoong: (){_joongController.text += _useCase.onClickHorizontalJoong();},
+          onClickVerticalJoong: (){_joongController.text += _useCase.onClickVerticalJoong();},
+          onClickMixedJoong: (){_joongController.text += _useCase.onClickMixedJoong();},
+        ),
         Container(
           constraints: const BoxConstraints(minHeight: 550),
           child: Wrap(
@@ -139,14 +123,14 @@ class _JasoHomeState extends State<JasoHome> {
                     Row(
                       children: [
                         Checkbox(
-                            value: _optionJong,
+                            value: _optionWithJong,
                             onChanged: (bool? value) {
                               setState(() {
-                                if (value == null) _optionJong = false;
-                                _optionJong = value!;
+                                if (value == null) _optionWithJong = false;
+                                _optionWithJong = value!;
                               });
                             }),
-                        const Text('종성 있는 글자만 보기')
+                        const Text('모든 종성 붙이기')
                       ],
                     ),
                     Expanded(
@@ -163,12 +147,13 @@ class _JasoHomeState extends State<JasoHome> {
                               onPressed: () async {
                                 CombinateResultData combResult =
                                     await _useCase.requestCombinate(
-                                        _option2350,
-                                        _option430,
-                                        _optionExceptJong,
-                                        _choController.text,
-                                        _joongController.text,
-                                        _jongController.text);
+                                        is2350: _option2350,
+                                        is430: _option430,
+                                        isWithoutJong: _optionExceptJong,
+                                        isWithJong: _optionWithJong,
+                                        cho: _choController.text,
+                                        joong: _joongController.text,
+                                        jong: _jongController.text);
                                 setState(() {
                                   _choController.text = combResult.inputCho;
                                   _joongController.text = combResult.inputJoong;
@@ -221,28 +206,48 @@ class _JasoHomeState extends State<JasoHome> {
                             const InputDecoration(border: OutlineInputBorder()),
                       )),
                   Text('글자수 : $_resultCount'),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 50.0),
-                    child: OutlinedButton(
-                        style: TextButton.styleFrom(
-                            shape: const RoundedRectangleBorder(),
-                            minimumSize: const Size.fromHeight(50)),
-                        onPressed: () {
-                          clear();
-                        },
-                        child: Wrap(
-                          alignment: WrapAlignment.center,
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          spacing: 10,
-                          children: const [
-                            Icon(Icons.refresh),
-                            Text(
-                              'All clear',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            )
-                          ],
-                        )),
-                  ),
+                  OutlinedButton(
+                      style: TextButton.styleFrom(
+                          shape: const RoundedRectangleBorder(),
+                          minimumSize: const Size.fromHeight(50)),
+                      onPressed: () {
+                        _useCase.onClickCopyToClipboard(_resultTextController.text);
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text('Copied to Clipboard'),
+                        ));
+                      },
+                      child: Wrap(
+                        alignment: WrapAlignment.center,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        spacing: 10,
+                        children: const [
+                          Icon(Icons.copy),
+                          Text(
+                            'Copy to Clipboard',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      )),
+                  OutlinedButton(
+                      style: TextButton.styleFrom(
+                          shape: const RoundedRectangleBorder(),
+                          minimumSize: const Size.fromHeight(50)),
+                      onPressed: () {
+                        clear();
+                      },
+                      child: Wrap(
+                        alignment: WrapAlignment.center,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        spacing: 10,
+                        children: const [
+                          Icon(Icons.refresh),
+                          Text(
+                            'All clear',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      )),
+                  const SizedBox(height: 50.0,),
                   Text('v$_appVersion'),
                   const SizedBox(
                     height: 130,
@@ -254,6 +259,32 @@ class _JasoHomeState extends State<JasoHome> {
         )
       ];
 
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: getVersion().then((value) => _appVersion = value),
+      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+        bool isVertical = MediaQuery.of(context).size.width < 750;
+        return Scaffold(
+            body: SingleChildScrollView(
+          child: isVertical
+              ? Column(
+                  children: contents(),
+                )
+              : Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: contents()
+                      .map((e) => Flexible(
+                            child: e,
+                            flex: 1,
+                          ))
+                      .toList(),
+                ),
+        ));
+      },
+    );
+  }
+
   Future<String> getVersion() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     return packageInfo.version;
@@ -264,6 +295,8 @@ class _JasoHomeState extends State<JasoHome> {
       _resultCount = 0;
       _option2350 = false;
       _option430 = false;
+      _optionExceptJong = false;
+      _optionWithJong = false;
       _choController.clear();
       _joongController.clear();
       _jongController.clear();
