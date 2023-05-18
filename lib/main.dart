@@ -206,28 +206,45 @@ class _JasoHomeState extends State<JasoHome> {
                             const InputDecoration(border: OutlineInputBorder()),
                       )),
                   Text('글자수 : $_resultCount'),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 50.0),
-                    child: OutlinedButton(
-                        style: TextButton.styleFrom(
-                            shape: const RoundedRectangleBorder(),
-                            minimumSize: const Size.fromHeight(50)),
-                        onPressed: () {
-                          clear();
-                        },
-                        child: Wrap(
-                          alignment: WrapAlignment.center,
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          spacing: 10,
-                          children: const [
-                            Icon(Icons.refresh),
-                            Text(
-                              'All clear',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            )
-                          ],
-                        )),
-                  ),
+                  OutlinedButton(
+                      style: TextButton.styleFrom(
+                          shape: const RoundedRectangleBorder(),
+                          minimumSize: const Size.fromHeight(50)),
+                      onPressed: () {
+
+                      },
+                      child: Wrap(
+                        alignment: WrapAlignment.center,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        spacing: 10,
+                        children: const [
+                          Icon(Icons.copy),
+                          Text(
+                            'Copy to Clipboard',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      )),
+                  OutlinedButton(
+                      style: TextButton.styleFrom(
+                          shape: const RoundedRectangleBorder(),
+                          minimumSize: const Size.fromHeight(50)),
+                      onPressed: () {
+                        clear();
+                      },
+                      child: Wrap(
+                        alignment: WrapAlignment.center,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        spacing: 10,
+                        children: const [
+                          Icon(Icons.refresh),
+                          Text(
+                            'All clear',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      )),
+                  const SizedBox(height: 50.0,),
                   Text('v$_appVersion'),
                   const SizedBox(
                     height: 130,
