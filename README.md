@@ -10,7 +10,7 @@ A program that extracts letters that can be combined using the initial, middle, 
 ## How to use
 
 📎 [자소조합기 접속 페이지](https://jerry-sy.github.io/jaso/)
-<img width="1178" alt="jaso_readme" src="https://user-images.githubusercontent.com/22640433/160767858-4e484742-f7bb-41cf-80a5-fc61418987f5.png">
+![alt text](https://github.com/jerry-sy/jasobox/blob/master/screenshot.png?raw=true)
 
 
 1. 원하는 조합의 초성/중성/종성을 입력 (입력 안 할 경우 모든 조합으로 요청)
