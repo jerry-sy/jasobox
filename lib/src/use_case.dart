@@ -54,7 +54,6 @@ class UseCase {
 
   Future onClickCopyToClipboard(String text) async {
     await Clipboard.setData(ClipboardData(text: text));
-    // toast
   }
 }
 

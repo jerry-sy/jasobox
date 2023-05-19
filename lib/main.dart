@@ -133,41 +133,39 @@ class _JasoHomeState extends State<JasoHome> {
                         const Text('모든 종성 붙이기')
                       ],
                     ),
-                    Expanded(
-                      child: Container(
-                        alignment: Alignment.bottomCenter,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 150),
-                          child: TextButton(
-                              style: TextButton.styleFrom(
-                                  shape: const RoundedRectangleBorder(),
-                                  backgroundColor: Colors.black,
-                                  foregroundColor: Colors.white,
-                                  minimumSize: const Size.fromHeight(50)),
-                              onPressed: () async {
-                                CombinateResultData combResult =
-                                    await _useCase.requestCombinate(
-                                        is2350: _option2350,
-                                        is430: _option430,
-                                        isWithoutJong: _optionExceptJong,
-                                        isWithJong: _optionWithJong,
-                                        cho: _choController.text,
-                                        joong: _joongController.text,
-                                        jong: _jongController.text);
-                                setState(() {
-                                  _choController.text = combResult.inputCho;
-                                  _joongController.text = combResult.inputJoong;
-                                  _jongController.text = combResult.inputJong;
-                                  _resultTextController.text =
-                                      combResult.result;
-                                  _resultCount = combResult.result.length;
-                                });
-                              },
-                              child: const Padding(
-                                padding: EdgeInsets.all(15.0),
-                                child: Text('추출하기'),
-                              )),
-                        ),
+                    Container(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 150),
+                        child: TextButton(
+                            style: TextButton.styleFrom(
+                                shape: const RoundedRectangleBorder(),
+                                backgroundColor: Colors.black,
+                                foregroundColor: Colors.white,
+                                minimumSize: const Size.fromHeight(50)),
+                            onPressed: () async {
+                              CombinateResultData combResult =
+                                  await _useCase.requestCombinate(
+                                      is2350: _option2350,
+                                      is430: _option430,
+                                      isWithoutJong: _optionExceptJong,
+                                      isWithJong: _optionWithJong,
+                                      cho: _choController.text,
+                                      joong: _joongController.text,
+                                      jong: _jongController.text);
+                              setState(() {
+                                _choController.text = combResult.inputCho;
+                                _joongController.text = combResult.inputJoong;
+                                _jongController.text = combResult.inputJong;
+                                _resultTextController.text =
+                                    combResult.result;
+                                _resultCount = combResult.result.length;
+                              });
+                            },
+                            child: const Padding(
+                              padding: EdgeInsets.all(15.0),
+                              child: Text('추출하기'),
+                            )),
                       ),
                     ),
                   ],
